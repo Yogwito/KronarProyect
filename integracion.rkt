@@ -1,24 +1,9 @@
 #lang racket
 
-;; ============================================================
-;; Integración Kronar - Racket (adaptado al Grupo OCaml)
-;; Lee resultado.json generado por Haskell y genera reporte
-;; ============================================================
-
 (require json)
-
-;; ------------------------------------------------------------
-;; Tipos algebraicos: estado de cada casilla
-;; Equivalente a: type estado = Visitada | Omitida
-;; ------------------------------------------------------------
 
 (struct Visitada (valor) #:transparent)
 (struct Omitida  (valor) #:transparent)
-
-;; ------------------------------------------------------------
-;; Determina el estado de cada casilla según el camino óptimo
-;; Usa pattern matching con match
-;; ------------------------------------------------------------
 
 (define (clasificar-casilla indice valor camino)
   (if (member indice camino)
@@ -30,10 +15,6 @@
              [v (in-list tablero)])
     (clasificar-casilla i v camino)))
 
-;; ------------------------------------------------------------
-;; Imprime una casilla con su estado usando pattern matching
-;; ------------------------------------------------------------
-
 (define (imprimir-estado estado)
   (match estado
     [(Visitada _) (display "[X]")]
@@ -43,12 +24,6 @@
   (match estado
     [(Visitada v) (display (~a v #:min-width 4))]
     [(Omitida  v) (display (~a v #:min-width 4))]))
-
-;; ------------------------------------------------------------
-;; Reconstruye el tablero visual en consola
-;; Ejemplo: [X] [ ] [X] [X] [X]
-;;            3   -2  -1   4   2
-;; ------------------------------------------------------------
 
 (define (mostrar-tablero-visual casillas)
   (displayln "\n--- Tablero visual ---")
@@ -60,10 +35,6 @@
     (imprimir-valor c)
     (display " "))
   (newline))
-
-;; ------------------------------------------------------------
-;; Calcula estadísticas propias (sin confiar en el JSON)
-;; ------------------------------------------------------------
 
 (define (contar-visitadas casillas)
   (length (filter Visitada? casillas)))
@@ -77,10 +48,6 @@
       [(Visitada v) (< v 0)]
       [_ #f])))
 
-;; ------------------------------------------------------------
-;; Reporte principal en consola
-;; ------------------------------------------------------------
-
 (define (mostrar-reporte datos casillas)
   (define tablero   (hash-ref datos 'tablero))
   (define camino    (hash-ref datos 'camino_optimo))
@@ -89,9 +56,7 @@
   (define penaliz   (hash-ref datos 'penalizacion_zafiro))
   (define vacio     (hash-ref datos 'regla_vacio_aplicada))
 
-  (displayln "╔══════════════════════════════════════╗")
-  (displayln "║      REPORTE KRONAR - Racket         ║")
-  (displayln "╚══════════════════════════════════════╝")
+  (displayln "--- REPORTE KRONAR - Racket ---")
 
   (display "Tablero:            ") (displayln tablero)
   (display "Camino optimo:      ") (displayln camino)

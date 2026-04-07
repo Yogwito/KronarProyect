@@ -32,6 +32,7 @@ t3 = [5, 5, 5, 5, 5, 5]
 
 -- Tablero 4: verifica que la penalización Zafiro se aplica correctamente
 -- y que el algoritmo evita el camino penalizado si hay uno mejor
+
 t4 :: Tablero
 t4 = [2, -5, 6, -1, 3]
 -- Caminos posibles desde 1:
